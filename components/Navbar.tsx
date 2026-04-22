@@ -1,3 +1,7 @@
+"use client";
+
+import Image from "next/image";
+
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur">
@@ -5,30 +9,43 @@ export default function Navbar() {
         
         {/* LOGO */}
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-fuchsia-600 text-sm font-bold text-white shadow-lg">
-            Z
-          </div>
-
-          <div>
-            <p className="text-lg font-bold tracking-tight text-zinc-900">
-              Zentra
-            </p>
-            <p className="text-xs text-zinc-500">
-              Automação inteligente
-            </p>
-          </div>
+          <Image
+            src="/logo-zentra.svg"
+            alt="Zentra"
+            width={160}
+            height={50}
+            priority
+          />
         </div>
 
-        {/* MENU */}
+        {/* MENU DESKTOP */}
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="#solucoes" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
+          <a
+            href="#solucoes"
+            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition"
+          >
             Soluções
           </a>
-          <a href="#beneficios" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
+
+          <a
+            href="#beneficios"
+            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition"
+          >
             Benefícios
           </a>
-          <a href="#contato" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
+
+          <a
+            href="#contato"
+            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition"
+          >
             Contato
+          </a>
+
+          <a
+            href="/leads"
+            className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition"
+          >
+            Leads
           </a>
         </nav>
 
@@ -36,10 +53,24 @@ export default function Navbar() {
         <a
           href="https://calendly.com/gregorysanches48/30min"
           target="_blank"
-          className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-blue-700"
+          rel="noopener noreferrer"
+          className="hidden md:inline-flex rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-blue-700 transition"
         >
           Agendar demonstração
         </a>
+
+        {/* BOTÃO MOBILE */}
+        <button className="md:hidden rounded-lg border border-zinc-300 p-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 text-zinc-800"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
     </header>
   );
