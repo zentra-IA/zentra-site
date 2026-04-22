@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id           String   @id @default(cuid())
+
+  name         String
+  whatsapp     String
+  company      String
+  problem      String
+
+  stage        String   @default("NEW")
+  source       String?  // hero, navbar, cta, form
+  destination  String?  // whatsapp, calendly
+  notes        String?  @default("")
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
