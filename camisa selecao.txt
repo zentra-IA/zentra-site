@@ -1,0 +1,106 @@
+nome do produto Camisa Gola Polo Do Brasil Selecao Brasileira Premium Hexa
+preço de R$100
+por R$78
+cor amarela, azul,branca,preta, verde
+tamanho p,m,g,gg
+nome da imagem
+brasilpolo1
+brasilpolo2
+brasilpolo3
+brasilpolo4
+brasilpolo5
+
+nome do produto
+Camisa seleção de Portugal (Cristiano Ronaldo 7)
+preço de R$120
+por R$105
+cor preta, vermelho e verde
+tamanho p,m,g,gg
+nome da imagem
+portugal1
+portugal2
+portugal3
+portugal4
+portugal5
+
+nome do produto
+Camisa seleção da alemanhã
+preço de R$120
+por R$105
+cor branca
+tamanho p,m,g,gg
+nome da imagem
+alemanha1
+alemanha2
+alemanha3
+
+nome do produto
+Camisa seleção da espanha (Lamine Yamal 10)
+preço de R$120
+por R$105
+cor vermelha
+tamanho p,m,g,gg
+nome da imagem
+alemanha1
+alemanha2
+alemanha3
+
+
+nome do produto
+Camisa seleção da holanda (Memphis Depay 10)
+preço de R$120
+por R$105
+cor laranja, azul 
+tamanho p,m,g,gg
+nome da imagem
+holanda1
+holanda2
+selcaotamanho
+holanda4
+holanda5
+
+nome do produto
+Camisa seleção da ingalterra (Harry Kane 9)
+preço de R$120
+por R$105
+cor branca
+tamanho p,m,g,gg
+nome da imagem
+inglaterra1
+inglaterra2
+selcaotamanho
+
+nome do produto
+Camisa seleção do uruguai 
+preço de R$120
+por R$105
+cor azul celeste
+tamanho p,m,g,gg
+nome da imagem
+uruguai1
+uruguai2
+selcaotamanho
+
+nome do produto
+Camisa seleção do japão
+preço de R$120
+por R$105
+cor azul 
+tamanho p,m,g,gg
+nome da imagem
+japao1
+japao2
+selcaotamanho
+
+nome do produto
+Camisa seleção da argentina (messi 10)
+preço de R$120
+por R$105
+cor preta, azul e branca
+tamanho p,m,g,gg
+nome da imagem
+argentina1
+argentina2
+argentina3
+argentina4
+selcaotamanho

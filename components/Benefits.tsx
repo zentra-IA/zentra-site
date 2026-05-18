@@ -1,59 +1,52 @@
 export default function Benefits() {
   const benefits = [
     {
-      title: "Mais velocidade no atendimento",
+      title: "Redução de custos",
       description:
-        "Reduza o tempo de resposta e aumente sua capacidade de atender bem, mesmo com mais volume.",
-      highlight: "Atenda mais rápido",
+        "Menos tempo gasto com tarefas manuais e mais eficiência na operação.",
     },
     {
-      title: "Menos perda de leads",
+      title: "Mais velocidade",
       description:
-        "Organize melhor a entrada e o acompanhamento dos contatos para evitar oportunidades desperdiçadas.",
-      highlight: "Mais oportunidades aproveitadas",
+        "Atendimento, processos e decisões acontecendo com menos demora.",
     },
     {
-      title: "Mais controle da operação",
+      title: "Mais organização",
       description:
-        "Centralize informações, processos e etapas importantes para tomar decisões com mais clareza.",
-      highlight: "Gestão mais organizada",
+        "Informações centralizadas para você acompanhar tudo com clareza.",
     },
     {
-      title: "Menos retrabalho",
+      title: "Menos perda de oportunidades",
       description:
-        "Automatize tarefas repetitivas e reduza falhas operacionais causadas por processos manuais.",
-      highlight: "Mais eficiência",
+        "Leads, contatos e demandas deixam de se perder no caminho.",
     },
     {
-      title: "Mais produtividade da equipe",
+      title: "Processos sob controle",
       description:
-        "Liberte o time de tarefas operacionais para focar no que realmente gera resultado.",
-      highlight: "Time mais estratégico",
+        "Rotinas mais previsíveis, padronizadas e fáceis de acompanhar.",
     },
     {
-      title: "Escala com estrutura",
+      title: "Tecnologia sob medida",
       description:
-        "Cresça sem transformar a operação em caos, mantendo atendimento, processo e execução alinhados.",
-      highlight: "Crescimento sustentável",
+        "Nada de sistema genérico. A solução é criada para o seu fluxo real.",
     },
   ];
 
   return (
-    <section id="beneficios" className="py-20 md:py-24 bg-white">
+    <section id="beneficios" className="bg-zinc-50 py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <span className="inline-flex rounded-full border border-fuchsia-200 bg-fuchsia-50 px-4 py-1.5 text-sm font-medium text-fuchsia-700">
+          <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-semibold text-emerald-700">
             Benefícios reais
           </span>
 
-          <h2 className="mt-5 text-3xl font-bold tracking-tight text-zinc-900 md:text-5xl">
-            O que sua empresa ganha quando a operação deixa de ser manual
+          <h2 className="mt-5 text-3xl font-bold tracking-tight text-zinc-950 md:text-5xl">
+            O resultado é uma empresa mais leve, rápida e organizada.
           </h2>
 
           <p className="mt-5 text-lg leading-8 text-zinc-600">
-            A Zentra não entrega só tecnologia. Entrega mais velocidade, mais
-            controle e mais estrutura para sua empresa crescer sem perder
-            eficiência.
+            A tecnologia certa reduz desperdício de tempo, melhora o controle
+            e aumenta a capacidade da sua empresa de atender, vender e crescer.
           </p>
         </div>
 
@@ -61,17 +54,13 @@ export default function Benefits() {
           {benefits.map((benefit) => (
             <div
               key={benefit.title}
-              className="rounded-3xl border border-zinc-200 bg-zinc-50 p-7 shadow-sm transition duration-300 hover:bg-white hover:shadow-lg"
+              className="rounded-3xl border border-zinc-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
             >
-              <p className="text-sm font-semibold text-blue-600">
-                {benefit.highlight}
-              </p>
-
-              <h3 className="mt-3 text-2xl font-bold tracking-tight text-zinc-900">
+              <h3 className="text-2xl font-bold tracking-tight text-zinc-950">
                 {benefit.title}
               </h3>
 
-              <p className="mt-4 text-base leading-7 text-zinc-600">
+              <p className="mt-4 leading-7 text-zinc-600">
                 {benefit.description}
               </p>
             </div>

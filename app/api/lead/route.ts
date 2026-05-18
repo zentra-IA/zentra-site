@@ -22,15 +22,19 @@ export async function POST(req: Request) {
     }
 
     const lead = await prisma.lead.create({
-      data: {
-        name,
-        whatsapp,
-        company,
-        problem,
-        source,
-        destination,
-      },
-    });
+  data: {
+    name,
+    whatsapp,
+    company,
+    problem,
+    source,
+    destination,
+
+    // 👇 ADICIONA ISSO
+    notes: "",
+    meetingDate: null,
+  },
+});
 
     return NextResponse.json({
       success: true,

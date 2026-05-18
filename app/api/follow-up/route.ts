@@ -1,35 +1,18 @@
-import { prisma } from "@/lib/prisma";
-import { sendWhatsApp } from "@/lib/whatsapp";
 import { NextResponse } from "next/server";
 
-export async function POST() {
-  const now = new Date();
+export const runtime = "nodejs";
 
-  const leads = await prisma.lead.findMany({
-    where: {
-      nextFollowUpAt: { lte: now },
-      hasReplied: false,
-      demoScheduled: false,
-    },
+export async function GET() {
+  return NextResponse.json({
+    success: true,
+    message: "Follow-up ainda não configurado.",
+    leads: [],
   });
+}
 
-  for (const lead of leads) {
-    if (!lead.phone) continue;
-
-    await sendWhatsApp(
-      lead.phone,
-      `Oi ${lead.name || ""}, passando pra te lembrar da demo 👇
-https://calendly.com/SEU-LINK`
-    );
-
-    await prisma.lead.update({
-      where: { id: lead.id },
-      data: {
-        followUpStep: lead.followUpStep + 1,
-        nextFollowUpAt: null,
-      },
-    });
-  }
-
-  return NextResponse.json({ ok: true });
+export async function POST() {
+  return NextResponse.json({
+    success: true,
+    message: "Follow-up ainda não configurado.",
+  });
 }

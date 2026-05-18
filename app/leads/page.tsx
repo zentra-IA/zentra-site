@@ -1,327 +1,244 @@
-import { prisma } from "@/lib/prisma";
-import Link from "next/link";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { useEffect, useState } from "react";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+} from "@hello-pangea/dnd";
 
-const stageLabels: Record<string, string> = {
-  NEW: "Entrou em contato",
-  MEETING_SCHEDULED: "Marcou reunião",
-  PROPOSAL_SENT: "Pediu proposta",
-  WON: "Fechamos negócio",
-  LOST: "Não quis fechar",
+type Lead = {
+  id: string;
+  name: string;
+  whatsapp: string;
+  company: string;
+  problem: string;
+  stage: string;
+  meetingDate?: string;
+  notes?: string;
 };
 
-const stageColors: Record<string, string> = {
-  NEW: "bg-blue-100 text-blue-700",
-  MEETING_SCHEDULED: "bg-amber-100 text-amber-700",
-  PROPOSAL_SENT: "bg-violet-100 text-violet-700",
-  WON: "bg-green-100 text-green-700",
-  LOST: "bg-red-100 text-red-700",
-};
+const stages = [
+  { id: "NEW", title: "Novo" },
+  { id: "MEETING_SCHEDULED", title: "Reunião" },
+  { id: "PROPOSAL_SENT", title: "Proposta" },
+  { id: "WON", title: "Fechado" },
+];
 
-async function updateLeadStage(formData: FormData) {
-  "use server";
+export default function CRM() {
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [meetingDate, setMeetingDate] = useState("");
 
-  const id = String(formData.get("id") || "");
-  const stage = String(formData.get("stage") || "");
+  useEffect(() => {
+    fetchLeads();
+  }, []);
 
-  if (!id || !stage) return;
+  async function fetchLeads() {
+    const res = await fetch("/api/lead/list");
+    const data = await res.json();
+    setLeads(data.leads || []);
+  }
 
-  await prisma.lead.update({
-    where: { id },
-    data: { stage },
-  });
-}
+  function getLeads(stage: string) {
+    return leads.filter((l) => l.stage === stage);
+  }
 
-async function updateLeadNotes(formData: FormData) {
-  "use server";
+  async function updateLead(id: string, data: any) {
+    await fetch(`/api/lead/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
-  const id = String(formData.get("id") || "");
-  const notes = String(formData.get("notes") || "");
+    fetchLeads();
+  }
 
-  if (!id) return;
+  async function deleteLead(id: string) {
+    if (!confirm("Excluir lead?")) return;
 
-  await prisma.lead.update({
-    where: { id },
-    data: { notes },
-  });
-}
+    await fetch(`/api/lead/${id}`, {
+      method: "DELETE",
+    });
 
-export default async function LeadsPage({
-  searchParams,
-}: {
-  searchParams?: {
-    stage?: string;
-    q?: string;
-  };
-}) {
-  const stageFilter = searchParams?.stage || "";
-  const q = searchParams?.q || "";
+    fetchLeads();
+  }
 
-  const leads = await prisma.lead.findMany({
-    where: {
-      ...(stageFilter ? { stage: stageFilter } : {}),
-      ...(q
-        ? {
-            OR: [
-              { name: { contains: q } },
-              { company: { contains: q } },
-              { problem: { contains: q } },
-              { whatsapp: { contains: q } },
-            ],
-          }
-        : {}),
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  async function handleDragEnd(result: any) {
+    const { destination, source, draggableId } = result;
 
-  const funnelCounts = await prisma.lead.groupBy({
-    by: ["stage"],
-    _count: {
-      stage: true,
-    },
-  });
+    if (!destination) return;
 
-  const countsMap = Object.fromEntries(
-    funnelCounts.map((item) => [item.stage, item._count.stage])
-  );
+    if (destination.droppableId !== source.droppableId) {
+      updateLead(draggableId, {
+        stage: destination.droppableId,
+      });
+    }
+  }
 
-  const stages = [
-    "NEW",
-    "MEETING_SCHEDULED",
-    "PROPOSAL_SENT",
-    "WON",
-    "LOST",
-  ];
+  function openSchedule(lead: Lead) {
+    setSelectedLead(lead);
+  }
+
+  async function saveMeeting() {
+    if (!selectedLead) return;
+
+    await updateLead(selectedLead.id, {
+      meetingDate,
+      stage: "MEETING_SCHEDULED",
+    });
+
+    setSelectedLead(null);
+    setMeetingDate("");
+  }
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-6 py-10 md:px-10">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-8">
-          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700">
-            CRM Zentra
-          </span>
+    <div className="p-6 bg-zinc-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6">
+        CRM
+      </h1>
 
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-zinc-900 md:text-5xl">
-            Leads e funil comercial
-          </h1>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="flex gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-4 md:overflow-visible">
 
-          <p className="mt-3 text-lg text-zinc-600">
-            Acompanhe os leads recebidos, filtre por etapa e avance o pipeline comercial.
-          </p>
-        </div>
-
-        <div className="mb-8 grid gap-4 md:grid-cols-5">
           {stages.map((stage) => (
-            <div
-              key={stage}
-              className="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm"
-            >
-              <p className="text-sm text-zinc-500">{stageLabels[stage]}</p>
-              <p className="mt-2 text-3xl font-bold text-zinc-900">
-                {countsMap[stage] || 0}
-              </p>
-            </div>
-          ))}
-        </div>
+            <Droppable key={stage.id} droppableId={stage.id}>
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="min-w-[300px] rounded-xl bg-white p-3 md:min-w-0 min-h-[500px]"
+                >
+                  <h2 className="font-semibold mb-4">
+                    {stage.title} ({getLeads(stage.id).length})
+                  </h2>
 
-        <div className="mb-6 rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm">
-          <form className="grid gap-4 md:grid-cols-[1fr_220px_160px]">
+                  {getLeads(stage.id).map((lead, index) => (
+                    <Draggable
+                      key={lead.id}
+                      draggableId={lead.id}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className="bg-zinc-50 p-4 mb-4 rounded-xl border shadow-sm"
+                        >
+                          <h3 className="font-semibold">
+                            {lead.name}
+                          </h3>
+
+                          <p className="text-sm text-zinc-500">
+                            {lead.company}
+                          </p>
+
+                          <p className="text-sm mt-2">
+                            {lead.problem}
+                          </p>
+
+                          {lead.meetingDate && (
+                            <p className="text-xs text-blue-600 mt-2">
+                              📅{" "}
+                              {new Date(
+                                lead.meetingDate
+                              ).toLocaleString()}
+                            </p>
+                          )}
+
+                          <textarea
+                            defaultValue={lead.notes || ""}
+                            onBlur={(e) =>
+                              updateLead(lead.id, {
+                                notes: e.target.value,
+                              })
+                            }
+                            placeholder="Observações..."
+                            className="w-full border mt-2 p-2 rounded text-sm"
+                          />
+
+                          <div className="mt-3 space-y-2">
+
+                            <a
+                              href={`https://wa.me/55${lead.whatsapp.replace(
+                                /\D/g,
+                                ""
+                              )}`}
+                              target="_blank"
+                              className="block bg-green-600 text-white text-center py-1 rounded text-sm"
+                            >
+                              WhatsApp
+                            </a>
+
+                            <button
+                              onClick={() => openSchedule(lead)}
+                              className="w-full bg-blue-600 text-white py-1 rounded text-sm"
+                            >
+                              Marcar reunião
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                updateLead(lead.id, {
+                                  stage: "WON",
+                                })
+                              }
+                              className="w-full bg-purple-600 text-white py-1 rounded text-sm"
+                            >
+                              Fechar
+                            </button>
+
+                            <button
+                              onClick={() => deleteLead(lead.id)}
+                              className="w-full bg-red-600 text-white py-1 rounded text-sm"
+                            >
+                              Excluir
+                            </button>
+
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))}
+
+        </div>
+      </DragDropContext>
+
+      {/* MODAL */}
+      {selectedLead && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-xl w-[300px]">
+
+            <h2 className="mb-4 font-semibold">
+              Marcar reunião
+            </h2>
+
             <input
-              type="text"
-              name="q"
-              defaultValue={q}
-              placeholder="Buscar por nome, empresa, WhatsApp ou problema"
-              className="rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-blue-500"
+              type="datetime-local"
+              value={meetingDate}
+              onChange={(e) =>
+                setMeetingDate(e.target.value)
+              }
+              className="border w-full p-2 rounded mb-4"
             />
 
-            <select
-              name="stage"
-              defaultValue={stageFilter}
-              className="rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-blue-500"
-            >
-              <option value="">Todas as etapas</option>
-              <option value="NEW">Entrou em contato</option>
-              <option value="MEETING_SCHEDULED">Marcou reunião</option>
-              <option value="PROPOSAL_SENT">Pediu proposta</option>
-              <option value="WON">Fechamos negócio</option>
-              <option value="LOST">Não quis fechar</option>
-            </select>
-
             <button
-              type="submit"
-              className="rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700"
+              onClick={saveMeeting}
+              className="bg-blue-600 text-white w-full py-2 rounded"
             >
-              Filtrar
+              Salvar
             </button>
-          </form>
+
+          </div>
         </div>
-
-        <div className="space-y-6">
-          {leads.length === 0 ? (
-            <div className="rounded-3xl border border-zinc-200 bg-white p-10 text-center text-zinc-500 shadow-sm">
-              Nenhum lead encontrado.
-            </div>
-          ) : (
-            leads.map((lead) => (
-              <div
-                key={lead.id}
-                className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
-              >
-                <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <h2 className="text-2xl font-bold tracking-tight text-zinc-900">
-                        {lead.name}
-                      </h2>
-
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          stageColors[lead.stage] || "bg-zinc-100 text-zinc-700"
-                        }`}
-                      >
-                        {stageLabels[lead.stage] || lead.stage}
-                      </span>
-                    </div>
-
-                    <div className="mt-4 grid gap-4 md:grid-cols-2">
-                      <div className="rounded-2xl bg-zinc-50 p-4">
-                        <p className="text-xs uppercase tracking-wide text-zinc-500">
-                          WhatsApp
-                        </p>
-                        <a
-                          href={`https://wa.me/55${lead.whatsapp.replace(/\D/g, "")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-2 block font-medium text-blue-600 hover:underline"
-                        >
-                          {lead.whatsapp}
-                        </a>
-                      </div>
-
-                      <div className="rounded-2xl bg-zinc-50 p-4">
-                        <p className="text-xs uppercase tracking-wide text-zinc-500">
-                          Empresa
-                        </p>
-                        <p className="mt-2 font-medium text-zinc-900">
-                          {lead.company}
-                        </p>
-                      </div>
-
-                      <div className="rounded-2xl bg-zinc-50 p-4">
-                        <p className="text-xs uppercase tracking-wide text-zinc-500">
-                          Origem
-                        </p>
-                        <p className="mt-2 font-medium text-zinc-900">
-                          {lead.source || "—"}
-                        </p>
-                      </div>
-
-                      <div className="rounded-2xl bg-zinc-50 p-4">
-                        <p className="text-xs uppercase tracking-wide text-zinc-500">
-                          Destino
-                        </p>
-                        <p className="mt-2 font-medium text-zinc-900">
-                          {lead.destination || "—"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 rounded-2xl bg-zinc-50 p-4">
-                      <p className="text-xs uppercase tracking-wide text-zinc-500">
-                        Problema informado
-                      </p>
-                      <p className="mt-2 whitespace-pre-wrap text-zinc-800">
-                        {lead.problem}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 text-sm text-zinc-500">
-                      Recebido em {new Date(lead.createdAt).toLocaleString("pt-BR")}
-                    </div>
-                  </div>
-
-                  <div className="space-y-5">
-                    <div className="rounded-2xl border border-zinc-200 p-4">
-                      <p className="mb-3 text-sm font-semibold text-zinc-800">
-                        Atualizar etapa do funil
-                      </p>
-
-                      <form action={updateLeadStage} className="space-y-3">
-                        <input type="hidden" name="id" value={lead.id} />
-
-                        <select
-                          name="stage"
-                          defaultValue={lead.stage}
-                          className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-blue-500"
-                        >
-                          <option value="NEW">Entrou em contato</option>
-                          <option value="MEETING_SCHEDULED">Marcou reunião</option>
-                          <option value="PROPOSAL_SENT">Pediu proposta</option>
-                          <option value="WON">Fechamos negócio</option>
-                          <option value="LOST">Não quis fechar</option>
-                        </select>
-
-                        <button
-                          type="submit"
-                          className="w-full rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700"
-                        >
-                          Salvar etapa
-                        </button>
-                      </form>
-                    </div>
-
-                    <div className="rounded-2xl border border-zinc-200 p-4">
-                      <p className="mb-3 text-sm font-semibold text-zinc-800">
-                        Observações internas
-                      </p>
-
-                      <form action={updateLeadNotes} className="space-y-3">
-                        <input type="hidden" name="id" value={lead.id} />
-
-                        <textarea
-                          name="notes"
-                          defaultValue={lead.notes || ""}
-                          rows={6}
-                          placeholder="Ex.: pediu retorno amanhã, quer proposta, reunião marcada..."
-                          className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-blue-500"
-                        />
-
-                        <button
-                          type="submit"
-                          className="w-full rounded-xl border border-zinc-300 px-4 py-3 font-semibold text-zinc-900 hover:bg-zinc-50"
-                        >
-                          Salvar observação
-                        </button>
-                      </form>
-                    </div>
-
-                    <a
-                      href={`https://wa.me/55${lead.whatsapp.replace(/\D/g, "")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full rounded-xl bg-green-600 px-4 py-3 text-center font-semibold text-white hover:bg-green-700"
-                    >
-                      Abrir WhatsApp
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="mt-8">
-          <Link
-            href="/"
-            className="text-sm font-medium text-blue-600 hover:underline"
-          >
-            ← Voltar para o site
-          </Link>
-        </div>
-      </div>
-    </main>
+      )}
+    </div>
   );
 }

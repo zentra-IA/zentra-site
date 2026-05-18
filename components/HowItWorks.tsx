@@ -2,52 +2,51 @@ export default function HowItWorks() {
   const steps = [
     {
       number: "01",
-      title: "Entendemos sua operação",
+      title: "Diagnóstico",
       description:
-        "Analisamos como seu atendimento, seus processos e sua rotina funcionam hoje para identificar gargalos reais.",
+        "Entendemos sua operação, suas dificuldades e onde você perde tempo ou dinheiro.",
     },
     {
       number: "02",
-      title: "Mapeamos o que está travando",
+      title: "Mapeamento",
       description:
-        "Descobrimos onde sua empresa perde tempo, leads, controle e eficiência no dia a dia.",
+        "Identificamos processos manuais, gargalos e oportunidades reais de automação.",
     },
     {
       number: "03",
-      title: "Desenhamos a solução ideal",
+      title: "Solução sob medida",
       description:
-        "Definimos a melhor estrutura de automação, sistema e organização para sua necessidade.",
+        "Desenhamos o sistema, automação ou fluxo ideal para a realidade do seu negócio.",
     },
     {
       number: "04",
-      title: "Implantamos e organizamos",
+      title: "Implantação",
       description:
-        "Colocamos a solução para rodar de forma prática, deixando sua operação mais clara e eficiente.",
+        "Colocamos a solução para funcionar de forma simples, moderna e organizada.",
     },
     {
       number: "05",
-      title: "Acompanhamos a evolução",
+      title: "Evolução",
       description:
-        "A operação não para na implantação. O objetivo é garantir melhoria contínua e crescimento com estrutura.",
+        "Ajustamos e melhoramos a solução conforme sua operação cresce.",
     },
   ];
 
   return (
-    <section className="bg-zinc-50 py-20 md:py-24">
+    <section id="processo" className="bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <span className="inline-flex rounded-full border border-fuchsia-200 bg-fuchsia-50 px-4 py-1.5 text-sm font-medium text-fuchsia-700">
+          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700">
             Como funciona
           </span>
 
-          <h2 className="mt-5 text-3xl font-bold tracking-tight text-zinc-900 md:text-5xl">
-            Da operação travada para uma operação organizada
+          <h2 className="mt-5 text-3xl font-bold tracking-tight text-zinc-950 md:text-5xl">
+            Um processo simples para transformar problema em solução.
           </h2>
 
           <p className="mt-5 text-lg leading-8 text-zinc-600">
-            A Zentra não entrega só ferramenta. Entrega direção, estrutura e
-            automação aplicadas ao que realmente precisa ser resolvido no seu
-            negócio.
+            Sem complicação. Primeiro entendemos o problema. Depois criamos
+            a tecnologia certa para resolver.
           </p>
         </div>
 
@@ -55,13 +54,13 @@ export default function HowItWorks() {
           {steps.map((step) => (
             <div
               key={step.number}
-              className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className="rounded-3xl border border-zinc-200 bg-zinc-50 p-6 shadow-sm transition hover:-translate-y-1 hover:bg-white hover:shadow-xl"
             >
-              <div className="inline-flex rounded-2xl bg-gradient-to-br from-blue-600 to-fuchsia-600 px-4 py-2 text-sm font-bold text-white shadow-lg">
+              <div className="inline-flex rounded-2xl bg-zinc-950 px-4 py-2 text-sm font-bold text-white">
                 {step.number}
               </div>
 
-              <h3 className="mt-5 text-xl font-bold tracking-tight text-zinc-900">
+              <h3 className="mt-5 text-xl font-bold tracking-tight text-zinc-950">
                 {step.title}
               </h3>
 

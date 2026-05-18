@@ -2,60 +2,49 @@
 
 import { useState } from "react";
 
-type Message = {
-  role: "user" | "assistant";
-  content: string;
+type Msg = {
+  role: "user" | "ai";
+  text: string;
 };
 
 export default function AIChat() {
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
+  const [message, setMessage] = useState("");
+  const [minimized, setMinimized] = useState(false);
+  const [messages, setMessages] = useState<Msg[]>([
     {
-      role: "assistant",
-      content: "Olá! Como posso ajudar seu negócio hoje?",
+      role: "ai",
+      text: "👋 Olá! Sou a IA da Zentra. Como posso te ajudar?",
     },
   ]);
+  const [loading, setLoading] = useState(false);
 
-  async function handleSend() {
-    if (!input.trim() || loading) return;
+  async function sendMessage() {
+    if (!message.trim()) return;
 
-    const userMessage: Message = {
-      role: "user",
-      content: input,
-    };
-
-    const nextMessages = [...messages, userMessage];
-    setMessages(nextMessages);
-    setInput("");
+    const userMessage = message;
+    setMessages((prev) => [...prev, { role: "user", text: userMessage }]);
+    setMessage("");
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const res = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: userMessage.content,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      setMessages([
-        ...nextMessages,
-        {
-          role: "assistant",
-          content: data.reply || "Não consegui responder agora.",
-        },
+      setMessages((prev) => [
+        ...prev,
+        { role: "ai", text: `🤖 ${data.reply || "Não consegui responder agora."}` },
       ]);
     } catch {
-      setMessages([
-        ...nextMessages,
+      setMessages((prev) => [
+        ...prev,
         {
-          role: "assistant",
-          content: "Erro ao conectar com a IA.",
+          role: "ai",
+          text: "📲 Para te ajudar melhor, fale com nossa equipe no WhatsApp: 11 99628-9534",
         },
       ]);
     } finally {
@@ -63,45 +52,174 @@ export default function AIChat() {
     }
   }
 
+  if (minimized) {
+    return (
+      <button
+        onClick={() => setMinimized(false)}
+        style={{
+          position: "fixed",
+          right: 24,
+          bottom: 24,
+          width: 64,
+          height: 64,
+          borderRadius: "50%",
+          border: "none",
+          background: "#00a884",
+          color: "#fff",
+          fontSize: 28,
+          cursor: "pointer",
+          boxShadow: "0 12px 35px rgba(0,0,0,.35)",
+          zIndex: 9999,
+        }}
+      >
+        💬
+      </button>
+    );
+  }
+
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-[320px] overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl">
-      <div className="border-b border-slate-800 px-4 py-3 text-sm font-semibold text-white">
-        Zentra IA
+    <div
+      style={{
+        position: "fixed",
+        right: 24,
+        bottom: 24,
+        width: 360,
+        height: 520,
+        background: "#0b141a",
+        borderRadius: 18,
+        overflow: "hidden",
+        boxShadow: "0 20px 60px rgba(0,0,0,.45)",
+        display: "flex",
+        flexDirection: "column",
+        border: "1px solid #1f2c34",
+        zIndex: 9999,
+      }}
+    >
+      <div
+        style={{
+          background: "#202c33",
+          padding: "14px 16px",
+          color: "#fff",
+          fontWeight: 700,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          💬 Zentra IA
+          <div style={{ fontSize: 12, color: "#aebac1", fontWeight: 400 }}>
+            Atendimento inteligente
+          </div>
+        </div>
+
+        <button
+          onClick={() => setMinimized(true)}
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "#aebac1",
+            fontSize: 22,
+            cursor: "pointer",
+          }}
+          title="Minimizar"
+        >
+          −
+        </button>
       </div>
 
-      <div className="h-64 space-y-3 overflow-y-auto px-4 py-3">
-        {messages.map((message, index) => (
+      <div
+        style={{
+          flex: 1,
+          padding: 14,
+          overflowY: "auto",
+          background: "#0b141a",
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+        }}
+      >
+        {messages.map((msg, index) => (
           <div
             key={index}
-            className={
-              message.role === "user"
-                ? "ml-auto max-w-[85%] rounded-2xl bg-blue-600 px-3 py-2 text-sm text-white"
-                : "max-w-[85%] rounded-2xl bg-slate-800 px-3 py-2 text-sm text-slate-200"
-            }
+            style={{
+              maxWidth: "82%",
+              alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
+              background: msg.role === "user" ? "#005c4b" : "#202c33",
+              color: "#e9edef",
+              padding: "10px 12px",
+              borderRadius:
+                msg.role === "user"
+                  ? "12px 12px 0 12px"
+                  : "12px 12px 12px 0",
+              fontSize: 14,
+              lineHeight: 1.45,
+              whiteSpace: "pre-wrap",
+            }}
           >
-            {message.content}
+            {msg.text}
           </div>
         ))}
+
+        {loading && (
+          <div
+            style={{
+              alignSelf: "flex-start",
+              background: "#202c33",
+              color: "#aebac1",
+              padding: "9px 12px",
+              borderRadius: "12px 12px 12px 0",
+              fontSize: 14,
+            }}
+          >
+            ✍️ Digitando...
+          </div>
+        )}
       </div>
 
-      <div className="border-t border-slate-800 p-3">
+      <div
+        style={{
+          padding: 12,
+          background: "#202c33",
+          display: "flex",
+          gap: 8,
+        }}
+      >
         <input
-          type="text"
-          placeholder="Digite sua mensagem..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleSend();
+            if (e.key === "Enter") sendMessage();
           }}
-          className="mb-3 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none"
+          placeholder="Digite uma mensagem"
+          style={{
+            flex: 1,
+            border: "none",
+            outline: "none",
+            borderRadius: 999,
+            padding: "12px 14px",
+            background: "#2a3942",
+            color: "#fff",
+            fontSize: 14,
+          }}
         />
 
         <button
-          onClick={handleSend}
+          onClick={sendMessage}
           disabled={loading}
-          className="w-full rounded-xl bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+          style={{
+            width: 46,
+            height: 46,
+            borderRadius: "50%",
+            border: "none",
+            background: "#00a884",
+            color: "#fff",
+            cursor: "pointer",
+            fontWeight: 700,
+            fontSize: 18,
+          }}
         >
-          {loading ? "Enviando..." : "Enviar"}
+          ➤
         </button>
       </div>
     </div>

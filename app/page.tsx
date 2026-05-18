@@ -1,47 +1,24 @@
-import ForWho from "@/components/ForWho";
-import HowItWorks from "@/components/HowItWorks";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Problem from "@/components/Problem";
 import Services from "@/components/Services";
-import Benefits from "@/components/Benefits";
-import LeadForm from "@/components/LeadForm";
+import Segments from "@/components/Segments";
 import CTA from "@/components/CTA";
-import Footer from "@/components/Footer";
+import AIChat from "@/components/AIChat";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white text-zinc-900">
-      
-      {/* Navbar */}
+    <main className="min-h-screen bg-white text-zinc-950">
       <Navbar />
 
-      {/* Hero */}
       <Hero />
 
-      {/* Problemas */}
-      <section>
-        <Problem />
-      </section>
+      <Services />
 
-      {/* Serviços */}
-      <section>
-        <Services />
-      </section>
+      <Segments />
 
-      {/* Benefícios */}
-      <section>
-        <Benefits />
-      </section>
+      <CTA />
 
-      {/* CTA */}
-      <section className="bg-gradient-to-r from-blue-600 to-fuchsia-600">
-        <CTA />
-      </section>
-
-      {/* Footer */}
-      <Footer />
-
+      <AIChat />
     </main>
   );
 }

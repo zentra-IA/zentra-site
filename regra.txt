@@ -1,0 +1,17 @@
+CD C:\zentra-app
+
+npm run dev
+
+http://localhost:3000
+
+
+para fazer autualização na web
+vercel --prod
+
+site
+https://zentra-app-eight.vercel.app/#solucoes
+
+crm
+
+
+https://zentra-app-eight.vercel.app/leads?q=&stage=
