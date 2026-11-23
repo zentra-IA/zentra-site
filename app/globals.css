@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+:root { color-scheme: light; }
+html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+body { margin:0; background:#f5f7fc; color:#17233e; font-family: "Inter", "Segoe UI", Arial, sans-serif; -webkit-font-smoothing:antialiased; }
+button, input, select, textarea { font:inherit; }
+::selection { background:#c4b5fd; color:#14152b; }
+* { box-sizing:border-box; }
+.z-container { width:calc(100% - 48px); max-width:1160px; margin-inline:auto; }
+.z-section { padding-block:94px; }
+.z-display { font-weight:800; letter-spacing:-.055em; line-height:1.085; }
+.z-section-title { max-width:790px; font-size:clamp(32px,3.35vw,48px); font-weight:800; letter-spacing:-.055em; line-height:1.14; }
+.z-eyebrow { display:inline-flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.13em;font-weight:800;text-transform:uppercase;color:#7461e8; }
+.z-eyebrow::before { content:""; display:block; width:18px; height:2px; background:currentColor; border-radius:4px; }
+.z-eyebrow-light {color:#b8abff;}
+.z-gradient-text { color:#a998ff; background-image:linear-gradient(105deg,#fff 0%,#b5acff 50%,#85dcf1 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.z-button { display:inline-flex;align-items:center;justify-content:center;gap:11px;min-height:47px;border:1px solid transparent;padding:12px 19px;border-radius:11px;font-size:13px;font-weight:750;line-height:1.3;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s; }
+.z-button:hover { transform:translateY(-2px); }
+.z-button-primary { background:linear-gradient(125deg,#7354f8,#9064fb);color:white;box-shadow:0 8px 25px #643af938; }
+.z-button-primary:hover { box-shadow:0 12px 30px #643af958; }
+.z-button-outline {background:#ffffff0d;border-color:#ffffff55;color:#fff;}
+.z-button-outline:hover {background:#ffffff20;}
+.z-button-dark {background:#141b38;color:#fff;box-shadow:0 10px 24px #20295119;}
+.z-button-dark:hover {background:#262b52;}
+.z-panel {border:1px solid #c4c9fc2a;background:linear-gradient(140deg,#1e2444,#111830);box-shadow:0 24px 65px #080e2666; }
+.z-card { background:white;border:1px solid #e3e8f5;border-radius:20px;box-shadow:0 8px 30px #25365b08;transition:transform .25s,box-shadow .25s,border-color .25s; }
+.z-card:hover {transform:translateY(-3px);box-shadow:0 16px 42px #273b7518;border-color:#b8b0f9;}
+.z-grid { background-image:linear-gradient(#c9d6ff0b 1px,transparent 1px),linear-gradient(90deg,#c9d6ff0b 1px,transparent 1px);background-size:44px 44px; }
+.z-aurora {background:radial-gradient(ellipse 55% 60% at 85% 15%,#6747c54b,transparent 78%),radial-gradient(ellipse 40% 65% at 15% 75%,#275ba22b,transparent 78%);}
+.z-mini-grid {background-image:linear-gradient(#ffffff0c 1px,transparent 1px),linear-gradient(90deg,#ffffff0c 1px,transparent 1px);background-size:22px 22px;}
+.z-dot {box-shadow:0 0 0 4px #5bf0c31c;}
+.z-animate-intro {animation:zIntro .55s ease-out both;}
+.z-animate-intro-late {animation:zIntro .65s .12s ease-out both;}
+.z-pulse {animation:zPulse 3s ease-in-out infinite;}
+.z-float {animation:zFloat 9s ease-in-out infinite;}
+.z-float-delayed {animation:zFloat 10s -3s ease-in-out infinite;}
+.z-shimmer {position:relative;overflow:hidden;}
+.z-shimmer::after {content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 35%,#ffffff0c 47%,transparent 58%);background-size:250% 100%;animation:zShimmer 11s linear infinite;}
+@keyframes zIntro {from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes zPulse {0%,100%{opacity:.68}50%{opacity:1}}
+@keyframes zFloat {0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes zShimmer {from{background-position:160% 0}to{background-position:-130% 0}}
+/* Avoid hiding content on load, when zooming, or when multiple dev sessions collide. */
+[data-z-reveal] {opacity:1!important;transform:none!important;}
+@media(max-width:768px){.z-container{width:calc(100% - 32px)}.z-section{padding-block:64px}.z-section-title{font-size:clamp(30px,8vw,39px)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}

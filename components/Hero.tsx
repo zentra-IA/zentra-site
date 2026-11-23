@@ -1,77 +1,35 @@
-import LeadCaptureButton from "@/components/LeadCaptureButton";
+import SiteIcon from "@/components/SiteIcon";
 
-export default function Hero() {
-  return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50 to-fuchsia-50 py-20 md:py-28">
-      <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 md:grid-cols-2 md:px-10">
-        <div>
-          <span className="inline-flex rounded-full border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm">
-            🤖 IA e automação para empresas
-          </span>
-
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-950 md:text-6xl md:leading-tight">
-            Sua empresa pode vender mais trabalhando menos no manual.
-          </h1>
-
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-600">
-            A Zentra cria sistemas, robôs e inteligências artificiais para
-            atender clientes, organizar processos e automatizar tarefas do seu negócio.
-          </p>
-
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <LeadCaptureButton
-              label="Agendar conversa"
-              destination="calendly"
-              source="hero"
-              className="rounded-xl bg-blue-600 px-7 py-4 font-bold text-white shadow-xl transition hover:bg-blue-700"
-            />
-
-            <LeadCaptureButton
-              label="Chamar no WhatsApp"
-              destination="whatsapp"
-              source="hero"
-              className="rounded-xl border border-zinc-300 bg-white px-7 py-4 font-bold text-zinc-900 shadow-sm transition hover:bg-zinc-50"
-            />
-          </div>
-
-          <p className="mt-5 text-sm text-zinc-500">
-            Diagnóstico rápido • Sem compromisso • Solução personalizada
-          </p>
-        </div>
-
-        <div className="rounded-[2rem] bg-zinc-950 p-7 text-white shadow-2xl">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-zinc-400">Exemplo de transformação</p>
-              <h2 className="text-2xl font-bold">Antes e depois</h2>
-            </div>
-
-            <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-300">
-              Online
-            </span>
-          </div>
-
-          <div className="rounded-2xl border border-red-400/20 bg-red-500/10 p-5">
-            <h3 className="font-bold text-red-200">Antes</h3>
-            <p className="mt-3 leading-7 text-zinc-300">
-              ❌ Cliente esperando resposta<br />
-              ❌ Pedido perdido no WhatsApp<br />
-              ❌ Equipe fazendo tudo manual<br />
-              ❌ Informações espalhadas
-            </p>
-          </div>
-
-          <div className="mt-5 rounded-2xl border border-green-400/20 bg-green-500/10 p-5">
-            <h3 className="font-bold text-green-200">Depois com Zentra</h3>
-            <p className="mt-3 leading-7 text-zinc-300">
-              ✅ IA responde automaticamente<br />
-              ✅ Leads organizados<br />
-              ✅ Sistema controla processos<br />
-              ✅ Mais tempo para vender
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+const bars = [26,43,35,60,53,72,58,91,78,94,80,100];
+const steps = [{n:"01",t:"Captação",sub:"Landing pages e anúncios",i:"megaphone" as const},{n:"02",t:"Orquestração",sub:"Automação de tarefas",i:"workflow" as const},{n:"03",t:"Inteligência",sub:"Dados e IA integrada",i:"bot" as const}];
+export default function Hero(){return <section id="inicio" className="relative isolate scroll-mt-24 overflow-hidden bg-[#0a1023] pb-16 pt-16 md:pb-20 md:pt-20">
+ <div aria-hidden className="pointer-events-none absolute inset-0 z-0 z-aurora"/><div aria-hidden className="pointer-events-none absolute inset-0 z-0 z-grid opacity-80"/><div aria-hidden className="pointer-events-none absolute inset-0 z-0 z-noise opacity-[.08]"/>
+ <div aria-hidden className="pointer-events-none absolute -right-[120px] top-12 h-[500px] w-[500px] rounded-full border border-violet-400/15 z-orbit"/>
+ <div className="z-container mx-auto w-[calc(100%-32px)] max-w-[1160px] sm:w-[calc(100%-48px)] relative z-10 grid items-center gap-10 lg:grid-cols-[1.02fr_.98fr] xl:gap-14">
+  <div className="z-animate-intro">
+   <div className="inline-flex max-w-full items-center gap-2.5 rounded-full border border-[#9485ff3d] bg-[#8776ff15] px-4 py-2 text-[10px] font-extrabold tracking-[.12em] text-[#d4cbff] sm:text-xs"><span className="z-dot h-2 w-2 rounded-full bg-[#6cf0d2]"/> SISTEMAS, AUTOMAÇÃO E INTELIGÊNCIA ARTIFICIAL</div>
+   <h1 className="z-display mt-8 max-w-[720px] text-[clamp(2.65rem,4.65vw,4.5rem)] text-white">Sua empresa tem desafios. <span className="z-gradient-text">Nós criamos a tecnologia.</span></h1>
+   <p className="mt-6 max-w-[520px] text-base leading-7 text-[#a9b4d1] md:text-[17px]">Mapeamos sua rotina, encontramos os gargalos e desenvolvemos <strong className="font-semibold text-white">sistemas, automações e inteligência artificial sob medida</strong> para empresas de qualquer segmento.</p>
+   <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href="#diagnostico" className="z-button z-button-primary">Vamos transformar sua operação <SiteIcon name="arrow" size={17}/></a><a href="#projetos" className="z-button z-button-outline">Explorar projetos <SiteIcon name="external" size={16}/></a></div>
+   <div className="mt-9 grid max-w-[570px] grid-cols-3 gap-4 border-t border-white/10 pt-6"><div><p className="text-sm font-black text-white sm:text-lg">Sob medida</p><p className="mt-1 text-[11px] leading-5 text-[#8793b5]">Para sua realidade</p></div><div><p className="text-sm font-black text-white sm:text-lg">Multissetorial</p><p className="mt-1 text-[11px] leading-5 text-[#8793b5]">Muito além das vendas</p></div><div><p className="text-sm font-black text-white sm:text-lg">IA + Automação</p><p className="mt-1 text-[11px] leading-5 text-[#8793b5]">Tecnologia conectada</p></div></div>
+  </div>
+  <div className="relative mx-auto w-full max-w-[600px] z-animate-intro-late" aria-label="Ilustração de uma plataforma empresarial com automação e relatórios">
+   <div aria-hidden className="pointer-events-none absolute -inset-10 rounded-[90px] bg-[radial-gradient(ellipse,#7955ff4a,transparent_64%)] blur-2xl"/>
+   <div className="relative z-panel z-shimmer overflow-hidden rounded-[24px] border-[#b1a6ff30]">
+    <div className="flex items-center justify-between border-b border-white/10 bg-[#151a32] px-5 py-4"><div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-[#fe6c89]"/><span className="h-2.5 w-2.5 rounded-full bg-[#ffcf74]"/><span className="h-2.5 w-2.5 rounded-full bg-[#5bdfba]"/></div><div className="flex items-center gap-2 text-[10px] font-semibold tracking-[.15em] text-[#acb4d8]"><SiteIcon name="workflow" size={14}/> ZENTRA / CONTROL CENTER</div><div className="h-2 w-11 rounded-full bg-white/10"/></div>
+    <div className="grid grid-cols-[48px_1fr] sm:grid-cols-[62px_1fr]">
+     <div className="flex flex-col items-center gap-4 border-r border-white/10 bg-[#11162c] py-6"><div className="grid h-9 w-9 place-items-center rounded-xl bg-[#785aff] text-white"><SiteIcon name="layers" size={19}/></div>{(["chart","database","workflow","bot","bell"] as const).map(i=><span key={i} className="grid h-9 w-9 place-items-center rounded-lg text-[#687599]"><SiteIcon name={i} size={18}/></span>)}</div>
+     <div className="min-w-0 p-4 sm:p-6">
+      <div className="flex items-start justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#949dc1]">Visão da operação</p><h2 className="mt-1 text-lg font-extrabold text-white sm:text-xl">Tudo conectado.</h2></div><span className="inline-flex items-center gap-1.5 rounded-full border border-[#51dcb943] bg-[#22c59b15] px-2 py-1 text-[9px] font-bold text-[#7df5ce]"><span className="h-1.5 w-1.5 rounded-full bg-[#79f7ca] z-pulse"/> FLUXO ATIVO</span></div>
+      <div className="mt-5 grid grid-cols-3 gap-2">{[{l:"Captar",v:"Entrada",c:"text-[#a49aff]"},{l:"Processar",v:"IA + Regras",c:"text-[#7faffc]"},{l:"Acompanhar",v:"CRM",c:"text-[#7df6cc]"}].map(s=><div key={s.l} className="rounded-[12px] border border-white/10 bg-[#ffffff08] p-3"><span className={`text-[9px] font-bold ${s.c}`}>{s.l}</span><p className="mt-1 text-xs font-extrabold text-white sm:text-sm">{s.v}</p></div>)}</div>
+      <div className="mt-4 rounded-2xl border border-white/10 bg-[#0b1022] p-4"><div className="flex items-center justify-between"><p className="text-xs font-bold text-[#ecedff]">Visão integrada</p><span className="text-[9px] text-[#8895c2]">Visualização ilustrativa</span></div><div className="mt-5 flex h-[96px] items-end gap-2 border-b border-[#ffffff16] pb-2 sm:h-[118px]">{bars.map((h,i)=><div key={i} className="relative flex-1 rounded-t-[4px] bg-gradient-to-t from-[#5236a8] to-[#8b77ff]" style={{height:`${h}%`,opacity:i<6?.45:.9,animationDuration:`${7+i*.14}s`}}/>)}</div><div className="mt-3 flex items-center justify-between"><span className="text-[10px] text-[#98a5c4]">Processos • Integrações • Informação</span><span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#7cf4d3]"><SiteIcon name="checkcircle" size={12}/> Conectado</span></div></div>
+      <div className="mt-4 grid grid-cols-3 gap-2">{steps.map(s=><div key={s.n} className="rounded-xl border border-[#9482ff2b] bg-[#9283ff0c] p-3"><div className="mb-2 flex items-center justify-between text-[#988cff]"><SiteIcon name={s.i} size={16}/><span className="text-[9px]">{s.n}</span></div><p className="text-[11px] font-extrabold text-white">{s.t}</p><p className="mt-1 text-[9px] leading-4 text-[#8793b6]">{s.sub}</p></div>)}</div>
+     </div>
+    </div>
+   </div>
+   <div className="absolute -bottom-6 -left-3 z-20 hidden rounded-2xl border border-[#8176d663] bg-[#19223d] px-4 py-3 shadow-[0_18px_55px_#030514a9] sm:block"><div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#27c8a22b] text-[#88f8d8]"><SiteIcon name="checkcircle" size={22}/></span><div><p className="text-[11px] font-black text-white">Processos inteligentes</p><p className="mt-0.5 text-[10px] text-[#9daaC5]">Menos etapas manuais</p></div></div></div>
+   <div className="absolute -right-3 top-24 z-20 hidden rounded-xl border border-[#7b74d266] bg-[#151c34] p-3 shadow-[0_18px_50px_#0008] sm:flex"><span className="flex items-center gap-2 text-[10px] font-extrabold text-[#cfcaff]"><SiteIcon name="sparkles" size={16}/> IA aplicada ao negócio</span></div>
+  </div>
+ </div>
+ <div className="z-container mx-auto w-[calc(100%-32px)] max-w-[1160px] sm:w-[calc(100%-48px)] relative z-10 mt-18 border-t border-white/10 pt-7"><div className="flex flex-wrap items-center justify-between gap-6"><span className="text-[10px] font-bold uppercase tracking-[.18em] text-[#7785a8]">Tecnologia aplicada a diferentes operações</span><div className="flex flex-wrap gap-x-7 gap-y-3 text-xs font-bold text-[#98a4c7]"><span>COMERCIAL</span><span>IMOBILIÁRIO</span><span>SAÚDE</span><span>RECRUTAMENTO</span><span>FOOD SERVICE</span></div></div></div>
+ </section>}

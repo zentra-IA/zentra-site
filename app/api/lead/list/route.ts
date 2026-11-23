@@ -1,21 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
-export async function GET() {
-  try {
-    const leads = await prisma.lead.findMany();
-
-    return NextResponse.json({ leads });
-  } catch (error: any) {
-    console.error("ERRO REAL:", error);
-
-    return NextResponse.json({
-      message: error?.message,
-      code: error?.code,
-      full: error
-    });
-  }
+import { isAdminAuthenticated } from "@/lib/adminAuth";
+export const runtime="nodejs";
+export const dynamic="force-dynamic";
+export async function GET(req:Request){
+ if(!isAdminAuthenticated(req))return NextResponse.json({error:"Acesso não autorizado."},{status:401});
+ try {
+  const leads=await prisma.lead.findMany({orderBy:{createdAt:"desc"}});
+  return NextResponse.json({leads},{headers:{"Cache-Control":"no-store"}});
+ }catch(e){console.error("Erro ao listar leads:",e);return NextResponse.json({error:"Falha ao carregar leads."},{status:500});}
 }

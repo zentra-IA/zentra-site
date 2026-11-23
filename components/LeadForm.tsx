@@ -1,217 +1,45 @@
 "use client";
-
 import { useState } from "react";
+import SiteIcon from "@/components/SiteIcon";
+
+const sectors = ["Comércio e varejo", "Indústria", "Imobiliária", "Clínica / saúde", "Restaurantes / food service", "Serviços", "RH / recrutamento", "Outro segmento"];
+const areas = ["Comercial e vendas", "Atendimento", "Administrativo", "Financeiro", "Recursos humanos", "Operação e logística", "Marketing", "Várias áreas / não sei ainda"];
 
 export default function LeadForm() {
-  const [form, setForm] = useState({
-    name: "",
-    whatsapp: "",
-    company: "",
-    problem: "",
-  });
-
-  const [loading, setLoading] = useState(false);
-
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    const { name, whatsapp, company, problem } = form;
-
-    if (!name || !whatsapp || !company || !problem) {
-      alert("Preencha todos os campos.");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      const response = await fetch("/api/lead", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data?.error || "Erro ao salvar lead.");
-        return;
-      }
-
-      const message = `Olá, vim pelo site da Zentra.%0A%0A*Nome:* ${encodeURIComponent(
-        name
-      )}%0A*WhatsApp:* ${encodeURIComponent(
-        whatsapp
-      )}%0A*Empresa:* ${encodeURIComponent(
-        company
-      )}%0A*Principal problema:* ${encodeURIComponent(problem)}`;
-
-      const url = `https://wa.me/5511996289534?text=${message}`;
-
-      window.open(url, "_blank");
-
-      setForm({
-        name: "",
-        whatsapp: "",
-        company: "",
-        problem: "",
-      });
-
-      alert("Lead salvo com sucesso.");
-    } catch (error) {
-      console.error("ERRO NO FORMULÁRIO:", error);
-      alert("Erro ao enviar lead.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <section className="bg-white py-20 md:py-24">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <div className="grid items-start gap-10 lg:grid-cols-2">
-          <div>
-            <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700">
-              Diagnóstico inicial
-            </span>
-
-            <h2 className="mt-5 text-3xl font-bold tracking-tight text-zinc-900 md:text-5xl">
-              Fale com a Zentra com mais contexto e mais clareza
-            </h2>
-
-            <p className="mt-5 text-lg leading-8 text-zinc-600">
-              Preencha as informações abaixo para acelerar seu atendimento.
-              Assim conseguimos entender melhor sua operação e indicar a solução
-              mais adequada para o seu negócio.
-            </p>
-
-            <div className="mt-8 space-y-4">
-              <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-                <h3 className="font-semibold text-zinc-900">
-                  Atendimento mais rápido
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-zinc-600">
-                  Você já chega com informações que ajudam a identificar seu
-                  cenário.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-                <h3 className="font-semibold text-zinc-900">
-                  Diagnóstico mais assertivo
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-zinc-600">
-                  A conversa fica mais objetiva e focada no que realmente precisa
-                  ser resolvido.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-                <h3 className="font-semibold text-zinc-900">
-                  Próximo passo mais claro
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-zinc-600">
-                  Entendemos se o melhor caminho é atendimento, automação,
-                  organização da operação ou uma solução personalizada.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-xl md:p-8">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold tracking-tight text-zinc-900">
-                Solicitar diagnóstico
-              </h3>
-              <p className="mt-2 text-sm text-zinc-600">
-                Preencha os dados e continue no WhatsApp.
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="mb-2 block text-sm font-medium text-zinc-800">
-                  Seu nome
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Digite seu nome"
-                  className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-zinc-900 outline-none transition focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-zinc-800">
-                  Seu WhatsApp
-                </label>
-                <input
-                  type="text"
-                  name="whatsapp"
-                  value={form.whatsapp}
-                  onChange={handleChange}
-                  placeholder="(11) 99999-9999"
-                  className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-zinc-900 outline-none transition focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-zinc-800">
-                  Nome da empresa
-                </label>
-                <input
-                  type="text"
-                  name="company"
-                  value={form.company}
-                  onChange={handleChange}
-                  placeholder="Digite o nome da empresa"
-                  className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-zinc-900 outline-none transition focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-zinc-800">
-                  Principal problema hoje
-                </label>
-                <textarea
-                  name="problem"
-                  value={form.problem}
-                  onChange={handleChange}
-                  placeholder="Ex.: atendimento lento, perda de leads, processos manuais, falta de organização..."
-                  rows={5}
-                  className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-zinc-900 outline-none transition focus:border-blue-500"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {loading ? "Enviando..." : "Enviar e continuar no WhatsApp"}
-              </button>
-
-              <p className="text-center text-xs leading-6 text-zinc-500">
-                Ao continuar, seus dados serão salvos e você será redirecionado
-                para o WhatsApp.
-              </p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+ const [data,setData]=useState({name:"",company:"",phone:"",email:"",sector:"",area:"",problem:"",contact:"telefone",consent:false, website:""});
+ const [loading,setLoading]=useState(false); const [status,setStatus]=useState<"idle"|"ok"|"error">("idle"); const [message,setMessage]=useState("");
+ function field(name:keyof typeof data, value:string|boolean){setData(p=>({...p,[name]:value}));}
+ async function submit(e:React.FormEvent){
+  e.preventDefault(); if(!data.consent){setStatus("error");setMessage("Confirme a autorização de contato para continuar.");return;}
+  if(data.contact==="email"&&!data.email.trim()){setStatus("error");setMessage("Informe o e-mail para receber o retorno por esse canal.");return;}
+  setLoading(true);setStatus("idle");
+  try {
+   const utm=new URLSearchParams(window.location.search);
+   const campaign=["utm_source","utm_medium","utm_campaign","utm_content"].map(k=>`${k}: ${(utm.get(k)||"não informado").slice(0,100)}`).join("\n");
+   const res=await fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:data.name,whatsapp:data.phone,company:data.company,problem:data.problem,notes:`Segmento: ${data.sector}\nÁrea: ${data.area}\nE-mail: ${data.email || "não informado"}\nPreferência de contato: ${data.contact}\nAutorizou retorno de contato pelo formulário: sim\n${campaign}`,source:"site-diagnostico",destination:"crm",website:data.website})});
+   const response=await res.json(); if(!res.ok) throw new Error(response.error || "Não foi possível enviar o diagnóstico.");
+   setData({name:"",company:"",phone:"",email:"",sector:"",area:"",problem:"",contact:"telefone",consent:false,website:""});setStatus("ok");setMessage("Recebemos suas informações. Entraremos em contato pelo canal indicado para entender seu projeto.");
+  } catch(err){setStatus("error");setMessage(err instanceof Error?err.message:"Erro ao enviar. Tente novamente.");} finally {setLoading(false);}
+ }
+ return <section id="diagnostico" className="relative scroll-mt-24 overflow-hidden bg-[#172344] py-20 md:py-24"><div className="z-container mx-auto w-[calc(100%-32px)] max-w-[1160px] sm:w-[calc(100%-48px)] grid gap-12 lg:grid-cols-[.86fr_1.14fr] lg:items-start">
+  <div data-z-reveal className="lg:sticky lg:top-32"><p className="z-eyebrow z-eyebrow-light">Vamos conversar?</p><h2 className="mt-6 text-4xl font-black tracking-[-.055em] text-white md:text-5xl">Conte o desafio. <span className="text-[#9b97ec]">A solução começa aqui.</span></h2><p className="mt-6 text-base leading-8 text-[#c2cce5]">Não precisa saber programar nem ter uma ferramenta em mente. Explique como sua operação funciona hoje e o que gostaria de melhorar.</p><div className="mt-9 space-y-5">{[{icon:"target" as const,title:"Diagnóstico do processo",text:"Entendemos as dificuldades, prioridades e objetivos da sua empresa."},{icon:"layers" as const,title:"Proposta personalizada",text:"Avaliamos um caminho tecnológico adequado ao seu cenário."},{icon:"shield" as const,title:"Contato direto e consultivo",text:"Sem encaminhar automaticamente você para grupos ou disparos."}].map(x=><div key={x.title} className="flex gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[#9d8aff33] bg-[#7d62ff19] text-[#a99cff]"><SiteIcon name={x.icon}/></span><div><h3 className="font-extrabold text-white">{x.title}</h3><p className="mt-1 text-sm leading-6 text-[#c2cce5]">{x.text}</p></div></div>)}</div><p className="mt-9 text-sm text-[#b4bfdf]">Prefere uma conversa direta? <a href="https://calendly.com/gregorysanches48/30min" className="font-bold text-[#b3a4ff] underline underline-offset-4" target="_blank" rel="noopener noreferrer">Agende uma reunião.</a></p></div>
+  <form onSubmit={submit} data-z-reveal className="relative rounded-[24px] border border-[#a59aff44] bg-[#f9faff] p-6 shadow-[0_30px_90px_#0007] sm:p-9">
+   <p className="text-xs font-extrabold uppercase tracking-[.14em] text-violet-700">Solicitar diagnóstico</p><h3 className="mt-2 text-2xl font-black tracking-tight text-slate-900">Vamos entender sua necessidade</h3><p className="mt-2 text-sm leading-6 text-slate-500">Preencha os campos e retornaremos para conversar sobre o projeto.</p>
+   <div className="mt-7 grid gap-5 sm:grid-cols-2">
+    <label className="text-sm font-bold text-slate-700">Seu nome *<input required maxLength={100} value={data.name} onChange={e=>field("name",e.target.value)} placeholder="Como podemos chamar você?" className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-normal text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"/></label>
+    <label className="text-sm font-bold text-slate-700">Empresa *<input required maxLength={120} value={data.company} onChange={e=>field("company",e.target.value)} placeholder="Nome da empresa" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3.5 text-sm font-normal text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"/></label>
+    <label className="text-sm font-bold text-slate-700">Telefone para retorno *<input required type="tel" minLength={10} maxLength={20} value={data.phone} onChange={e=>field("phone",e.target.value)} placeholder="(11) 99999-9999" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3.5 text-sm font-normal text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"/></label>
+    <label className="text-sm font-bold text-slate-700">E-mail (opcional)<input type="email" required={data.contact==="email"} maxLength={120} value={data.email} onChange={e=>field("email",e.target.value)} placeholder="voce@empresa.com" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3.5 text-sm font-normal text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"/></label>
+    <label className="text-sm font-bold text-slate-700">Segmento *<select required value={data.sector} onChange={e=>field("sector",e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-normal text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"><option value="">Selecione</option>{sectors.map(x=><option key={x}>{x}</option>)}</select></label>
+    <label className="text-sm font-bold text-slate-700">Área que deseja melhorar *<select required value={data.area} onChange={e=>field("area",e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-normal text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"><option value="">Selecione</option>{areas.map(x=><option key={x}>{x}</option>)}</select></label>
+    <label className="text-sm font-bold text-slate-700 sm:col-span-2">O que gostaria de automatizar ou resolver? *<textarea required minLength={15} maxLength={2000} rows={5} value={data.problem} onChange={e=>field("problem",e.target.value)} placeholder="Conte o que sua equipe faz hoje, o que dá trabalho, o que gostaria que funcionasse de outra forma..." className="mt-2 w-full resize-y rounded-xl border border-slate-200 px-4 py-3.5 text-sm font-normal leading-6 text-slate-900 outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"/></label>
+    <label className="text-sm font-bold text-slate-700 sm:col-span-2">Como prefere receber nosso retorno?<select value={data.contact} onChange={e=>field("contact",e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-normal text-slate-900 outline-none focus:border-violet-500"><option value="telefone">Ligação telefônica</option><option value="whatsapp">WhatsApp</option><option value="email">E-mail (preencha acima)</option></select></label>
+    <div className="absolute -left-[10000px]" aria-hidden="true"><label>Site da empresa<input tabIndex={-1} autoComplete="off" value={data.website} onChange={e=>field("website",e.target.value)}/></label></div>
+   </div>
+   <label className="mt-6 flex cursor-pointer items-start gap-3 text-xs leading-6 text-slate-500"><input required type="checkbox" checked={data.consent} onChange={e=>field("consent",e.target.checked)} className="mt-1 h-4 w-4 accent-violet-600"/><span>Autorizo a Zentra a usar os dados enviados para entrar em contato comigo sobre minha solicitação. Não serão usados para disparos em massa sem autorização específica.</span></label>
+   <button disabled={loading} className="z-button z-button-primary mt-7 w-full disabled:cursor-wait disabled:opacity-70">{loading?"Enviando solicitação...":"Enviar e solicitar diagnóstico"}<SiteIcon name="arrow" size={18}/></button>
+   {status!=="idle"&&<p role="status" className={`mt-4 rounded-lg px-4 py-3 text-sm leading-6 ${status==="ok"?"bg-emerald-50 text-emerald-800":"bg-rose-50 text-rose-800"}`}>{message}</p>}
+   <p className="mt-4 text-center text-xs text-slate-400">Seus dados serão enviados ao nosso CRM comercial.</p>
+  </form>
+ </div></section>;
 }

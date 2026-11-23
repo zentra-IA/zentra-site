@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   DragDropContext,
   Droppable,
   Draggable,
+  type DropResult,
 } from "@hello-pangea/dnd";
 
 type Lead = {
@@ -29,22 +31,30 @@ export default function CRM() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [meetingDate, setMeetingDate] = useState("");
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
     fetchLeads();
   }, []);
 
   async function fetchLeads() {
-    const res = await fetch("/api/lead/list");
-    const data = await res.json();
-    setLeads(data.leads || []);
+    try {
+      const res = await fetch("/api/lead/list", {cache:"no-store"});
+      if(res.status===401){setAuthorized(false);setLeads([]);return;}
+      if(!res.ok) throw new Error("Falha ao carregar os leads.");
+      const data = await res.json();
+      setLeads(data.leads || []);
+      setAuthorized(true);
+    } catch {setLoginError("Não foi possível carregar o CRM. Verifique a conexão.");setAuthorized(false);}
   }
 
   function getLeads(stage: string) {
     return leads.filter((l) => l.stage === stage);
   }
 
-  async function updateLead(id: string, data: any) {
+  async function updateLead(id: string, data: Record<string,string>) {
     await fetch(`/api/lead/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -64,7 +74,7 @@ export default function CRM() {
     fetchLeads();
   }
 
-  async function handleDragEnd(result: any) {
+  async function handleDragEnd(result: DropResult) {
     const { destination, source, draggableId } = result;
 
     if (!destination) return;
@@ -92,11 +102,26 @@ export default function CRM() {
     setMeetingDate("");
   }
 
+  async function login(e: React.FormEvent) {
+    e.preventDefault(); setLoginError("");
+    try {
+      const res=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});
+      if(!res.ok) {setLoginError("Senha inválida ou acesso administrativo ainda não configurado.");return;}
+      setPassword("");await fetchLeads();
+    }catch{setLoginError("Falha na conexão. Tente novamente.");}
+  }
+  async function logout(){await fetch("/api/admin/logout",{method:"POST"});setLeads([]);setAuthorized(false);}
+
+  if(authorized!==true) return <main className="grid min-h-screen place-items-center bg-slate-100 px-4 py-12">
+    <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl"><div className="mb-6 text-2xl font-black text-violet-700">Zentra • CRM</div>
+      {authorized===null ? <p className="text-slate-600">Verificando acesso...</p> : <form onSubmit={login} className="space-y-5"><h1 className="text-xl font-bold">Acesso administrativo</h1><p className="text-sm text-slate-600">Informe a senha configurada para o CRM.</p><label className="block text-sm font-semibold">Senha<input type="password" required autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)} className="mt-2 w-full rounded-lg border border-slate-300 p-3"/></label><button type="submit" className="w-full rounded-lg bg-violet-700 px-4 py-3 font-bold text-white hover:bg-violet-800">Entrar</button>{loginError&&<p role="alert" className="text-sm text-red-700">{loginError}</p>}</form>}
+      <Link href="/" className="mt-7 block text-sm font-semibold text-violet-700">← Voltar ao site</Link>
+    </div>
+  </main>;
+
   return (
     <div className="p-6 bg-zinc-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6">
-        CRM
-      </h1>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl font-bold">CRM • Leads</h1><div className="flex items-center gap-4"><Link href="/" className="text-sm font-semibold text-violet-700">Ir para o site</Link><button onClick={logout} className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-bold text-white">Sair</button></div></div>
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-4 md:overflow-visible">

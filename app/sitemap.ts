@@ -1,14 +1,3 @@
 import type { MetadataRoute } from "next";
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://zentra-app-eight.vercel.app";
-
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-  ];
-}
+const baseUrl=(process.env.NEXT_PUBLIC_SITE_URL||"https://zentra-app-eight.vercel.app").replace(/\/$/,"");
+export default function sitemap():MetadataRoute.Sitemap{return [{url:baseUrl,lastModified:new Date(),changeFrequency:"monthly",priority:1}];}

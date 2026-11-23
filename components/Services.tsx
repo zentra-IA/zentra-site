@@ -1,79 +1,17 @@
-export default function Services() {
-  const services = [
-    {
-      icon: "💬",
-      title: "WhatsApp automático",
-      description:
-        "Sua empresa responde clientes, tira dúvidas e capta interessados mesmo fora do horário.",
-    },
-    {
-      icon: "🤖",
-      title: "Chatbot com IA",
-      description:
-        "Um atendente inteligente para conversar, orientar e encaminhar clientes.",
-    },
-    {
-      icon: "📊",
-      title: "CRM simples",
-      description:
-        "Organize clientes, oportunidades, retornos e vendas em um só lugar.",
-    },
-    {
-      icon: "🌐",
-      title: "Sites que vendem",
-      description:
-        "Páginas modernas para apresentar sua empresa e gerar contatos pelo WhatsApp.",
-    },
-    {
-      icon: "⚡",
-      title: "Automação de tarefas",
-      description:
-        "Tarefas repetitivas viram processos automáticos para economizar tempo.",
-    },
-    {
-      icon: "🧩",
-      title: "Sistema personalizado",
-      description:
-        "Criamos sistemas sob medida para controlar pedidos, equipe, vendas ou financeiro.",
-    },
-  ];
-
-  return (
-    <section id="solucoes" className="bg-white py-20">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <div className="mx-auto mb-14 max-w-2xl text-center">
-          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
-            O que fazemos
-          </span>
-
-          <h2 className="mt-5 text-3xl font-bold md:text-5xl">
-            Tecnologia fácil de entender e usar
-          </h2>
-
-          <p className="mt-5 text-lg text-zinc-600">
-            Você mostra o problema. A Zentra cria a solução.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {services.map((service) => (
-            <div
-              key={service.title}
-              className="rounded-3xl border border-zinc-200 bg-zinc-50 p-7 shadow-sm transition hover:-translate-y-1 hover:bg-white hover:shadow-xl"
-            >
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-fuchsia-600 text-3xl shadow-lg">
-                {service.icon}
-              </div>
-
-              <h3 className="text-2xl font-bold">{service.title}</h3>
-
-              <p className="mt-4 leading-7 text-zinc-600">
-                {service.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+import SiteIcon, {type SiteIconName} from "@/components/SiteIcon";
+const services:{icon:SiteIconName;number:string;title:string;description:string;label:string}[] = [
+{icon:"layers",number:"01",label:"SOFTWARE PERSONALIZADO",title:"Sistemas que seguem o seu processo",description:"Plataformas web, áreas administrativas, portais e sistemas de gestão desenvolvidos para a maneira como a sua empresa funciona."},
+{icon:"workflow",number:"02",label:"INTEGRAÇÃO E AUTOMAÇÃO",title:"Menos tarefas. Mais fluidez.",description:"Automatizamos etapas repetitivas, conectamos informações entre setores e organizamos fluxos que antes dependiam de várias ferramentas."},
+{icon:"bot",number:"03",label:"INTELIGÊNCIA ARTIFICIAL",title:"IA onde realmente faz diferença",description:"Assistentes, análise de dados e documentos, triagem e atendimento orientados pelas regras e necessidades da sua operação."},
+{icon:"chart",number:"04",label:"INTELIGÊNCIA COMERCIAL",title:"Da oportunidade ao fechamento",description:"CRM, funis de vendas, prospecção, cotações e indicadores para acompanhar cada etapa da jornada comercial."},
+{icon:"database",number:"05",label:"BACKOFFICE E OPERAÇÕES",title:"Organização em todas as áreas",description:"Gestão documental, RH, financeiro, operações e rotinas internas: a automação também transforma o que acontece longe das vendas."},
+{icon:"bell",number:"06",label:"EXPERIÊNCIA E CANAIS",title:"Seu negócio, seus canais",description:"Portais próprios, notificações autorizadas, formulários, jornadas multicanais e integração com campanhas de captação."},
+];
+export default function Services(){return <section id="solucoes" className="z-section relative py-16 md:py-24 scroll-mt-24 overflow-hidden bg-[#f6f8fe]">
+ <div className="pointer-events-none absolute -left-64 top-40 h-[520px] w-[520px] rounded-full bg-[#5632a522] blur-[120px]"/>
+ <div className="z-container mx-auto w-[calc(100%-32px)] max-w-[1160px] sm:w-[calc(100%-48px)] relative">
+  <div data-z-reveal className="grid items-end gap-8 lg:grid-cols-[1fr_.62fr]"><div><p className="z-eyebrow">O que desenvolvemos</p><h2 className="z-section-title max-w-[790px] text-[clamp(32px,3.35vw,48px)] font-extrabold leading-[1.14] tracking-[-.05em] mt-5 text-[#101936]">Não encaixamos sua empresa em uma ferramenta. <span className="text-[#737b9c]">Criamos a ferramenta certa.</span></h2></div><p className="max-w-lg text-base leading-8 text-[#56627e]">Vendas, RH, atendimento, documentos, gestão ou processos internos. A tecnologia deve se adaptar às necessidades do seu negócio — e não o contrário.</p></div>
+  <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3">{services.map(s=><article key={s.number} data-z-reveal className="z-card group relative flex min-h-[236px] flex-col overflow-hidden p-6 sm:p-7"><div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-[#815bff0b] blur-xl transition group-hover:bg-[#815bff25]"/><div className="relative flex items-start justify-between"><span className="grid h-13 w-13 place-items-center rounded-[15px] border border-[#d9d1ff] bg-[#f1eeff] text-[#ac9cff] transition group-hover:border-[#8d7dff99] group-hover:text-white"><SiteIcon name={s.icon} size={25}/></span><span className="font-mono text-[12px] text-[#828eaf]">/{s.number}</span></div><div className="relative mt-7"><p className="text-[10px] font-black tracking-[.17em] text-[#7761df]">{s.label}</p><h3 className="mt-3 text-[20px] font-extrabold leading-7 tracking-[-.025em] text-[#17213d]">{s.title}</h3><p className="mt-3 text-[14px] leading-6 text-[#5c6985]">{s.description}</p></div></article>)}</div>
+  <div className="mt-10 flex flex-col justify-between gap-5 rounded-[20px] border border-[#d8ddf1] bg-[#eef0fb] p-6 md:flex-row md:items-center md:px-9"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-[#6a55d0]">Sem catálogo fechado</p><p className="mt-2 max-w-2xl text-lg font-bold text-[#17213d]">Não encontrou o que precisa? É justamente aí que começa o nosso trabalho.</p></div><a href="#diagnostico" className="z-button z-button-dark">Descreva seu desafio <SiteIcon name="arrow" size={16}/></a></div>
+ </div>
+ </section>}
