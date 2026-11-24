@@ -1,3 +1,4 @@
+import {allowRequest} from "@/lib/rateLimit";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -5,6 +6,7 @@ export const runtime = "nodejs";
 
 const txt = (v: unknown, max: number) => typeof v === "string" ? v.trim().slice(0,max) : "";
 export async function POST(req: Request) {
+  if(!allowRequest(req,"public-lead",6,10*60*1000))return NextResponse.json({error:"Muitas solicitações em sequência. Tente novamente mais tarde."},{status:429});
   try {
     const body = await req.json();
     if (txt(body?.website,200)) return NextResponse.json({success:true}); // honeypot

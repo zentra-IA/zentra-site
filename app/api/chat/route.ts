@@ -1,3 +1,4 @@
+import {allowRequest} from "@/lib/rateLimit";
 import { NextResponse } from "next/server";
 export const runtime="nodejs";
 
@@ -10,11 +11,13 @@ Nunca invente preços, prazos, resultados ou funcionalidades que não estejam co
 Responda em português do Brasil, de forma clara, profissional, curta e cordial.`;
 
 export async function POST(req:Request){
+ if(!allowRequest(req,"public-chat",12,60*1000))return NextResponse.json({reply:"Muitas mensagens em sequência. Tente novamente em instantes."},{status:429});
  try {
   const body=await req.json(); const message=typeof body?.message==="string"?body.message.trim():"";
   if(!message||message.length>500)return NextResponse.json({reply:"Escreva uma pergunta de até 500 caracteres."},{status:400});
   if(!process.env.OPENAI_API_KEY)return NextResponse.json({reply:"No momento o assistente está indisponível. Use o formulário de diagnóstico para entrar em contato."},{status:503});
-  const response=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${process.env.OPENAI_API_KEY}`},body:JSON.stringify({model:"gpt-4o-mini",messages:[{role:"system",content:SYSTEM},{role:"user",content:message}],temperature:0.4,max_tokens:280})});
+  const previous=Array.isArray(body?.history)?body.history.slice(-8).filter((m:unknown):m is {role:string;text:string}=>typeof m==="object"&&m!==null&&"role" in m&&"text" in m&&typeof (m as {text?:unknown}).text==="string"&&["user","ai"].includes(String((m as {role?:unknown}).role))).map((m:{role:string;text:string})=>({role:m.role==="ai"?"assistant":"user",content:m.text.slice(0,500)})):[];
+  const response=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${process.env.OPENAI_API_KEY}`},body:JSON.stringify({model:"gpt-4o-mini",messages:[{role:"system",content:SYSTEM},...previous,{role:"user",content:message}],temperature:0.4,max_tokens:280})});
   if(!response.ok){console.error("Assistente de IA indisponível",response.status);return NextResponse.json({reply:"Não consegui responder agora. Envie sua solicitação pelo formulário de diagnóstico."},{status:503});}
   const data=await response.json();return NextResponse.json({reply:data?.choices?.[0]?.message?.content||"Envie sua solicitação pelo formulário de diagnóstico."});
  }catch(e){console.error("Erro no chat:",e);return NextResponse.json({reply:"O assistente está temporariamente indisponível. Use o formulário de diagnóstico."},{status:500});}

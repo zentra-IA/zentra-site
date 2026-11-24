@@ -1,0 +1,14 @@
+# Checklist V9 antes de anunciar
+- [ ] `npm run build` aprovado no Windows (gera Prisma).
+- [ ] Página inicial desktop/mobile: menu, destaque WePush e botões.
+- [ ] Demo WePush: Notificação → Portal → Chat → reiniciar; conteúdo marcado simulação.
+- [ ] Demo Voice IA: três passos, textos fictícios, nenhum contato real.
+- [ ] Simulador Push: 500 msg/dia, 22 dias, 90% WhatsApp entregue, preços editáveis; retorno coerente.
+- [ ] Simulador Voice: tentativas, conversas, qualificados, custos e CLT sem prometer economia.
+- [ ] Simulador RH: tempo/hora e custo exibidos como estimativas.
+- [ ] Formulário diagnóstico: salvar lead REAL no CRM /leads, com `?interesse=wepush` e `?interesse=voice-ia`.
+- [ ] Chatbot: revisar custos e proteção contra abuso.
+- [ ] Políticas, LGPD, domínio, links de agendamento, página de privacidade.
+- [ ] Simuladores exibem fontes e não garantem entrega ou performance.
+- [ ] Git não contém `.env*`, segredos, backups nem dados de clientes.
+- [ ] Teste final no celular Android e iPhone, especialmente a navegação e CTA.

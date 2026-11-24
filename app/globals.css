@@ -44,3 +44,24 @@ button, input, select, textarea { font:inherit; }
 [data-z-reveal] {opacity:1!important;transform:none!important;}
 @media(max-width:768px){.z-container{width:calc(100% - 32px)}.z-section{padding-block:64px}.z-section-title{font-size:clamp(30px,8vw,39px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+/* V6: ajustes de legibilidade, contraste e navegação */
+:root {--zentra-ink:#15223d; --zentra-purple:#785fe5;}
+body { overflow-x:clip; }
+main section { scroll-margin-top:76px; }
+.z-container { width:min(1160px,calc(100% - 48px)); }
+.z-hero-title {text-wrap:balance;}
+.z-hero-glow {background:radial-gradient(ellipse 48% 60% at 76% 30%,#6149cf39,transparent 85%),radial-gradient(ellipse 35% 45% at 4% 95%,#2a71833b,transparent 80%);}
+.z-console {transform:translateZ(0);}
+.z-console button:focus-visible,.z-showcase button:focus-visible {outline:3px solid #b9a7ff; outline-offset:3px;}
+.z-showcase {box-shadow:0 25px 80px #06091d57;}
+.z-button:focus-visible {outline:3px solid #a593ff;outline-offset:3px;}
+.prose-privacy h2 {font-size:1.3rem;font-weight:800;letter-spacing:-.02em;margin-top:2.2rem;margin-bottom:.7rem;color:#1b2744;}
+.prose-privacy p {font-size:15px;line-height:1.85;margin-bottom:1.1rem;color:#55647f;}
+.z-section-title {text-wrap:balance;}
+@media(max-width:768px){.z-container {width:calc(100% - 32px)}.z-hero {padding-top:52px}.z-hero-title{letter-spacing:-.055em}.z-section {padding-block:68px}}
+@media(prefers-reduced-motion:reduce){.z-console,.z-showcase,.z-orbit-badge {animation:none!important;}}
+
+/* V9: leitura e acesso ao diagnóstico em todas as telas */
+.z-button {font-size:14px;min-height:48px}
+.z-showcase button {min-height:50px}
+@media(max-width:640px){.z-hero-title{font-size:clamp(2.35rem,10vw,3.1rem)}.z-section{padding-block:58px}}
