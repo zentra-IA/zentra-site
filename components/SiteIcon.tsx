@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type SiteIconName = "workflow" | "database" | "bot" | "megaphone" | "phone" | "bell" | "chart" | "arrow" | "check" | "building" | "heart" | "users" | "package" | "utensils" | "sparkles" | "shield" | "menu" | "close" | "target" | "calendar" | "external" | "layers" | "rocket" | "clock" | "checkcircle";
+export type SiteIconName = "workflow" | "database" | "bot" | "megaphone" | "phone" | "bell" | "chart" | "arrow" | "check" | "building" | "heart" | "users" | "package" | "utensils" | "sparkles" | "shield" | "menu" | "close" | "target" | "calendar" | "external" | "layers" | "rocket" | "clock" | "checkcircle" | "instagram" | "whatsapp";
 
 const paths: Record<SiteIconName, ReactNode> = {
   workflow: <><rect x="2" y="3" width="7" height="6" rx="1.5"/><rect x="15" y="15" width="7" height="6" rx="1.5"/><path d="M9 6h5a4 4 0 0 1 4 4v5M5.5 9v8H15"/></>,
@@ -28,6 +28,8 @@ const paths: Record<SiteIconName, ReactNode> = {
   rocket: <><path d="M5 14c0-5 6-11 14-11 0 8-6 14-11 14l-3-3ZM14 5l5 5M5 14l-2 4 4-2M8 17l-1 5 5-4"/></>,
   clock: <><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></>,
   checkcircle: <><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></>,
+  instagram: <><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.25"/><circle cx="17.8" cy="6.3" r="1" fill="currentColor" stroke="none"/></>,
+  whatsapp: <><path d="M20.4 11.65a8.6 8.6 0 0 1-12.5 7.62L3 20.6l1.34-4.72a8.6 8.6 0 1 1 16.06-4.23Z"/><path d="M8.3 8.4c.25-.34.5-.35.75-.28l1.22.58c.24.13.32.3.26.6l-.44 1.08a.6.6 0 0 0 .1.62c.58.82 1.28 1.48 2.16 1.93.24.12.43.1.57-.08l.73-.85c.17-.22.37-.23.62-.11l1.25.6c.3.15.34.36.28.6-.3 1.18-1.25 1.66-2.18 1.6-2.06-.12-5.4-3.06-5.74-5.15-.07-.42.02-.76.42-1.14Z"/></>,
 };
 
 export default function SiteIcon({ name, size = 22, className = "" }: { name: SiteIconName; size?: number; className?: string }) {
